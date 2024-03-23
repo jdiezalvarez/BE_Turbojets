@@ -111,6 +111,11 @@ point_13['T'] = round(T_13,3)
 point_13['rho'] = round(rho_13,3)
 point_13['m_point'] =  round(m_point_13,3)
 
+# Points 16 and 18
+
+point_16 = point_13
+point_18 = point_16
+
 # Point 24
 point_24 = {}
 # There is a Low Pressure Comressor (Intermediate Pressure Compressor - IPC), also called Booster
@@ -146,7 +151,7 @@ point_25['m_point'] =  round(m_point_25,3)
 point_3 = {}
 p_3 = 12.5*p_25
 T_3_is = T_25*(p_3/p_25)**((gamma_a-1)/gamma_a)
-T_3 =n_HP_is*(T_3_is-T_25)+T_25
+T_3 = (T_3_is-T_25)/n_IPC_is + T_25 
 rho_3 = p_3/r/T_3
 m_point_3 = m_point_25
 point_3['p'] = round(p_3,3)
@@ -184,9 +189,13 @@ point_4['m_point'] =  round(m_point_4,3)
 print("\nPoint 1", point_1)
 print("\nPoint_2", point_2)
 print("\nPoint 13", point_13)
+print("\nPoint 16", point_16)
+print("\nPoint 18", point_18)
 print("\nPoint_21", point_21)
 print("\nPoint_24", point_24)
 print("\nPoint_25", point_25)
 print("\nPoint_3" , point_3)
 print("\nPoint 31", point_31)
 print("\nPoint 4 ", point_4)
+
+#test
