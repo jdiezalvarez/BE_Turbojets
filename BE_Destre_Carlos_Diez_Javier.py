@@ -1,8 +1,11 @@
 import math
 
 #Donnees numeriques
-gamma = 1.4
-Cp = 1.4
+gamma_a = 1.4
+Cp_a = 1.4
+
+gamma_g = 4/3
+Cp_g = 1147
 rho = 1
 R = 8.314
 M = 0.02897
@@ -12,7 +15,7 @@ p_std = 101325 #Pa
 T_std = 288.15 #K
 n_fan_is = 0.97 
 n_IPC_is = 0.82
-
+n_HP_is = 0.88
 points = []
 
 
@@ -35,13 +38,13 @@ print("\n\n*******Cruise Condition******** \n")
 ####Point 1
 point_1 = {}
 
-T_1 = Tatm1*(1+(gamma-1)/2*Ma**2) #isentropic transformation
+T_1 = Tatm1*(1+(gamma_a-1)/2*Ma**2) #isentropic transformation
 
-p_1 = (T_1/Tatm1)**(gamma/(gamma-1))*patm1 
+p_1 = (T_1/Tatm1)**(gamma_a/(gamma_a-1))*patm1 
 
-rho_1 = rho*(1+(gamma-1)/2*Ma**2)**(1/(gamma-1))
+rho_1 = rho*(1+(gamma_a-1)/2*Ma**2)**(1/(gamma_a-1))
 
-v_1 = Ma*math.sqrt(gamma*r*Tatm1) #static temperature en vez de total
+v_1 = Ma*math.sqrt(gamma_a*r*Tatm1) #static temperature en vez de total
 
 
 point_1['p'] = round(p_1,3)
@@ -80,7 +83,7 @@ point_1['m_point'] =  round(m_point_1,3)
 point_21 = {}
 p_21 = 1.52 * p_2
 #The transformation is isentropic so:
-T_21_is = T_2* (p_21/p_2)**((gamma-1)/gamma)
+T_21_is = T_2* (p_21/p_2)**((gamma_a-1)/gamma_a)
 T_21 = (T_21_is-T_2)/n_fan_is + T_2 
 
 #Perfect gas
@@ -112,8 +115,8 @@ point_13['m_point'] =  round(m_point_13,3)
 point_24 = {}
 # There is a Low Pressure Comressor (Intermediate Pressure Compressor - IPC), also called Booster
 p_24 = 1.41*p_21
-#The transformation is isentropic so:
-T_24_is = T_21*(p_24/p_21)**((gamma-1)/gamma)
+#Temperature if the transformation was isentropic so:
+T_24_is = T_21*(p_24/p_21)**((gamma_a-1)/gamma_a)
 #Then we use the isentropic efficiency of the booster
 T_24 = (T_24_is-T_21)/n_IPC_is + T_21 
 #Perfect gas
@@ -139,14 +142,51 @@ point_25['T'] = round(T_25,3)
 point_25['rho'] = round(rho_25,3)
 point_25['m_point'] =  round(m_point_25,3)
 
+##Point 3
+point_3 = {}
+p_3 = 12.5*p_25
+T_3_is = T_25*(p_3/p_25)**((gamma_a-1)/gamma_a)
+T_3 =n_HP_is*(T_3_is-T_25)+T_25
+rho_3 = p_3/r/T_3
+m_point_3 = m_point_25
+point_3['p'] = round(p_3,3)
+point_3['T'] = round(T_3,3)
+point_3['rho'] = round(rho_3,3)
+point_3['m_point'] =  round(m_point_3,3)
+
+##Point 31
+point_31 = {}
+#We have no loses in HP distributor, only we have the widthdraw of air.
+p_31 = p_3
+T_31 = T_3
+rho_31 = rho_3
+m_point_31 = 0.95 * m_point_3
+point_31['p'] = round(p_31,3)
+point_31['T'] = round(T_31,3)
+point_31['rho'] = round(rho_31,3)
+point_31['m_point'] =  round(m_point_31,3)
 
 
+##Point 4
+point_4 = {}
+#Loses of pressure in combustion chamber
+p_4 = 0.96*p_31
+T_4 = 1540
+rho_4 = p_4/r/T_4
+m_point_4 = m_point_31
+#I didn't use efficiency of combustion, I think it's only useful por efficiency so later
+point_4['p'] = round(p_4,3)
+point_4['T'] = round(T_4,3)
+point_4['rho'] = round(rho_4,3)
+point_4['m_point'] =  round(m_point_4,3)
 
 
-
-print("Point 1", point_1)
-print("point_2", point_2)
-print("Point 13", point_13)
-print("Point_21", point_21)
-print("Point_24", point_24)
-print("Point_25", point_25)
+print("\nPoint 1", point_1)
+print("\nPoint_2", point_2)
+print("\nPoint 13", point_13)
+print("\nPoint_21", point_21)
+print("\nPoint_24", point_24)
+print("\nPoint_25", point_25)
+print("\nPoint_3" , point_3)
+print("\nPoint 31", point_31)
+print("\nPoint 4 ", point_4)
