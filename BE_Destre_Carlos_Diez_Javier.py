@@ -153,7 +153,11 @@ p_3 = 12.5*p_25
 T_3_is = T_25*(p_3/p_25)**((gamma_a-1)/gamma_a)
 T_3 = (T_3_is-T_25)/n_IPC_is + T_25 
 rho_3 = p_3/r/T_3
+
+
 m_point_3 = m_point_25
+
+
 point_3['p'] = round(p_3,3)
 point_3['T'] = round(T_3,3)
 point_3['rho'] = round(rho_3,3)
@@ -165,7 +169,14 @@ point_31 = {}
 p_31 = p_3
 T_31 = T_3
 rho_31 = rho_3
-m_point_31 = 0.95 * m_point_3
+
+
+
+m_point_31 = (1-0.05-0.025)* m_point_3
+# creo que además, habría que tener en cuenta la addition de carburant
+
+
+
 point_31['p'] = round(p_31,3)
 point_31['T'] = round(T_31,3)
 point_31['rho'] = round(rho_31,3)
@@ -185,6 +196,27 @@ point_4['T'] = round(T_4,3)
 point_4['rho'] = round(rho_4,3)
 point_4['m_point'] =  round(m_point_4,3)
 
+# Point 41
+
+point_41 = {}
+
+p_41 = p_4
+T_41 = T_4
+rho_41 = rho_4
+m_point_41 = m_point_4 + 0.05*m_point_3
+
+point_41['p'] = round(p_41,3)
+point_41['T'] = round(T_41,3)
+point_41['rho'] = round(rho_41,3)
+point_41['m_point'] =  round(m_point_41,3)
+
+# Point 44
+
+point_44 = {}
+ 
+ 
+m_point_44 = m_point_41 + 0.05*m_point_3
+ 
 
 print("\nPoint 1", point_1)
 print("\nPoint_2", point_2)
@@ -197,5 +229,5 @@ print("\nPoint_25", point_25)
 print("\nPoint_3" , point_3)
 print("\nPoint 31", point_31)
 print("\nPoint 4 ", point_4)
+print("\nPoint 41 ", point_41)
 
-#test
