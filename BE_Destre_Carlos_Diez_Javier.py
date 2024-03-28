@@ -1,3 +1,6 @@
+#À rendre le 10/04 au plus tard
+
+
 import math
 
 #Donnees numeriques
@@ -16,6 +19,9 @@ T_std = 288.15 #K
 n_fan_is = 0.97 
 n_IPC_is = 0.82
 n_HP_is = 0.88
+n_HP_turb_poly = 0.85
+h_25 = -43125*1000
+n_fuel = 0.993
 points = []
 
 
@@ -158,10 +164,12 @@ rho_3 = p_3/r/T_3
 m_point_3 = m_point_25
 
 
-point_3['p'] = round(p_3,3)
+
+point_3['p'] = round(p_3, 3)
 point_3['T'] = round(T_3,3)
 point_3['rho'] = round(rho_3,3)
 point_3['m_point'] =  round(m_point_3,3)
+
 
 ##Point 31
 point_31 = {}
@@ -170,53 +178,69 @@ p_31 = p_3
 T_31 = T_3
 rho_31 = rho_3
 
-
-
 m_point_31 = (1-0.05-0.025)* m_point_3
-# creo que además, habría que tener en cuenta la addition de carburant
-
-
 
 point_31['p'] = round(p_31,3)
 point_31['T'] = round(T_31,3)
 point_31['rho'] = round(rho_31,3)
 point_31['m_point'] =  round(m_point_31,3)
 
-
+#Hasta aquí bien
 ##Point 4
 point_4 = {}
+#Temperature of end combustion 
+T_4 = 1540
+#Calculation of ratio quantity of fuel
+fth = (-Cp_a*(298.15 - T_31)-Cp_g*(T_4-298.15))/(h_25+Cp_g*(T_4-298.15))
+f = fth/n_fuel
 #Loses of pressure in combustion chamber
 p_4 = 0.96*p_31
-T_4 = 1540
+
 rho_4 = p_4/r/T_4
-m_point_4 = m_point_31
-#I didn't use efficiency of combustion, I think it's only useful por efficiency so later
+m_point_4 = m_point_31 + m_point_31*f
+
 point_4['p'] = round(p_4,3)
 point_4['T'] = round(T_4,3)
 point_4['rho'] = round(rho_4,3)
 point_4['m_point'] =  round(m_point_4,3)
 
+
 # Point 41
 
 point_41 = {}
-
 p_41 = p_4
 T_41 = T_4
 rho_41 = rho_4
 m_point_41 = m_point_4 + 0.05*m_point_3
 
 point_41['p'] = round(p_41,3)
+
 point_41['T'] = round(T_41,3)
 point_41['rho'] = round(rho_41,3)
 point_41['m_point'] =  round(m_point_41,3)
 
 # Point 44
-
 point_44 = {}
- 
- 
-m_point_44 = m_point_41 + 0.05*m_point_3
- 
+T_44 = T_41 - 48000/(m_point_41 * Cp_g) 
+n = 1/(1-((gamma_g-1)/gamma_g)*n_HP_turb_poly)
+p_44 = p_41*(T_44/T_41)**(n/(n-1))
+rho_44 = p_44/r/T_44
+m_point_44 = m_point_41 + 0.025*m_point_3
+
+point_44['p'] = round(p_44,3)
+point_44['T'] = round(T_44,3)
+point_44['rho'] = round(rho_44,3)
+point_44['m_point'] =  round(m_point_44,3)
+
+
+
+# Point 45
+
+p_45 = 0.98 * p_44
+T_45 = T_44
+rho_45 = p_45/r/T_45
+
+
 
 print("\nPoint 1", point_1)
 print("\nPoint_2", point_2)
